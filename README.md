@@ -1,6 +1,6 @@
-# 📌 Analyse des Déterminants Macro-Financiers des Crises Bancaires  
+# Analyse des Déterminants Macro-Financiers des Crises Bancaires  
 ### Approche ACP – Clustering et Régression sur Données de Panel
-## 🎓 Master 1 — Monnaie, Banque, Finance et Assurance  
+## Master 1 — Monnaie, Banque, Finance et Assurance  
 Parcours Ingénierie Économique et Financière  
 Université de Rennes — Promotion 2025-2026  
 **Auteurs :**  
@@ -11,16 +11,16 @@ Université de Rennes — Promotion 2025-2026
 ## 1️⃣ Présentation du projet
 Cette étude analyse les **vulnérabilités macro-financières** de 14 pays émergents entre **1993 et 2002**, période marquée par plusieurs crises majeures (Mexique, Asie, Russie, Argentine, Brésil).
 L’approche combine trois piliers méthodologiques :
+
 ✔ **Analyse en Composantes Principales (ACP)**  
 ✔ **Méthodes de clustering (HCPC & k-means)**  
 ✔ **Régression économétrique sur données de panel**  
 L’objectif est de **caractériser les mécanismes de vulnérabilité bancaire** et d’identifier les variables expliquant l’occurrence de crises.
 L’étude mobilise **13 indicateurs macro-économiques & bancaires** couvrant :  
-📌 stabilité bancaire — 📌 crédit & investissement — 📌 prix & change — 📌 déséquilibres externes — 📌 cycle macroéconomique
+(1) stabilité bancaire — (2) crédit & investissement — (3) prix & change — (4) déséquilibres externes — (5) cycle macroéconomique
 
 ---
-## 2️⃣ Méthodologie
-### 🔹 ACP non pondérée & pondérée
+## 2️⃣ ACP non pondérée & pondérée
 Deux axes principaux émergent :
 - **Profondeur et endettement financier**
 - **Vulnérabilité bancaire & externe**
@@ -69,27 +69,28 @@ Trois profils de pays sont identifiés :
 ### ✨ Variables significatives
 | Variable | Effet sur la probabilité de crise |
 |----------|------------------------------------|
-| ROAA | 🔻 Négatif — stabilisateur |
-| INFL | 🔻 Négatif — effet contre-intuitif |
-| CAGDP | 🔺 Positif |
-| DEPRATE | 🔺 Positif |
+| ROAA | -0.0436 |🔻 Négatif — stabilisateur |
+| INFL | -0.0133 |🔻 Négatif — effet contre-intuitif |
+| CAGDP | 0.0235 |🔺 Positif |
+| DEPRATE | 0.0134 | 🔺 Positif |
+
 ➡ Les résultats sont **robustes** (Logit RE, robust SE, Mundlak)
-📌 Coefficient de détermination :  
 **R² ≈ 0,19 — cohérent avec phénomènes rares et non-linéaires**
 
 ---
 
 ## 6️⃣ Interprétation économique
-### 🏦 ROAA — Rentabilité des actifs
+### ROAA — Rentabilité des actifs
 ✔ améliore la résilience bancaire
-### 🌍 Balance courante / PIB
+### Balance courante / PIB
 ✔ excédents élevés → risques structurels possibles
-### 📉 Inflation
+### Inflation
 ✔ relation négative dans cet échantillon — résultat spécifique au contexte
-### 💰 Taux de dépôt
+### Taux de dépôt
 ✔ hausse → boom du crédit → vulnérabilité financière
 
 ---
+
 ## 7️⃣ Tests diagnostiques
 ✔ Normalité — non cruciale ici  
 ✔ Homoscédasticité — validée  
@@ -118,7 +119,7 @@ Elle illustre la nécessité d’une **surveillance macro-prudentielle globale**
 📌 dynamique du crédit  
 
 ---
-## 🔗 Références principales
+## Références principales
 Baltagi (2013) — Panel Econometrics  
 Kaminsky & Reinhart (1999) — Twin Crises  
 Schularick & Taylor (2012) — Credit boom-bust  
@@ -126,7 +127,7 @@ Demirgüç-Kunt & Huizinga (2000) — Bank profitability
 McKinnon (1973), Shaw (1973) — Financial deepening  
 
 ---
-## 💻 Code
+## Code
 L’ensemble des analyses (ACP, clustering, panel) est implémenté en **R**  
 avec les librairies :
 - FactoMineR  
@@ -135,7 +136,7 @@ avec les librairies :
 - tidyverse  
 
 ---
-## 📍 Contexte académique
+## Contexte académique
 Projet réalisé dans le cadre du :
 🎓 **Master 1 — Ingénierie Économique & Financière**  
 Université de Rennes  
