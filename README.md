@@ -1,6 +1,5 @@
-# Analyse des Déterminants Macro-Financiers des Crises Bancaires  
-### Approche ACP – Clustering et Régression sur Données de Panel
-## Master 1 — Monnaie, Banque, Finance et Assurance  
+# 📌 Analyse des Déterminants Macro-Financiers des Crises Bancaires: Approche ACP – Clustering et Régression sur Données de Panel
+## 🎓  Master 1 — Monnaie, Banque, Finance et Assurance  
 Parcours Ingénierie Économique et Financière  
 Université de Rennes — Promotion 2025-2026  
 **Auteurs :**  
