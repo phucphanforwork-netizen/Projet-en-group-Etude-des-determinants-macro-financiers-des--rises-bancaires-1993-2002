@@ -1,17 +1,21 @@
-install.packages("corrplot") #Matrice de covariance
-install.packages("FactoMineR") #ACP
-install.packages("dplyr")
-install.packages("tidyverse")
-library(dplyr)
-library(tidyverse)
-library(FactoMineR)
-library(corrplot)
+
+required <- c("dplyr","tidyverse","FactoMineR",
+              "factoextra","corrplot","strucchange",
+              "ggplot2","reshape2", "dplyr", "tidyverse", 
+              "performance", "marginaleffects", "clubSandwich", 
+              "pROC", "plm", "lme4", "lmtest", "car")
+
+for(pkg in required){
+  if(!requireNamespace(pkg, quietly = TRUE)) install.packages(pkg)
+  library(pkg, character.only = TRUE)
+}
 
 #============================================================================
 #     Partie 1: Télécharger des données et prendre la pondération
 #============================================================================
 
 # Import file ews
+setwd("C:/Users/HOANG PHUC/Downloads/Candidate 2025/Étude des déterminants macro-financiers des crises bancaires sur la période 1993 – 2002")
 database <- read.csv("ews.csv")
 
 # Voire 6 premieres lignes
@@ -25,6 +29,7 @@ colSums(is.na(database))
 database_clean <- database %>%  mutate(across(where(is.numeric), ~ ifelse(is.na(.), mean(., na.rm = TRUE), .)))
 
 summary(database)
+
 #Standardisation (z-score)
 vars <- c("ROAA","NPLGROSSLOANS","PER","CREDITGDP","GDPG","GFCFG",
           "GFCFGDP","HFCEG","HFCEGDP","CAGDP","INFL","REALRATE","DEPRATE")
@@ -122,15 +127,26 @@ HACP = HCPC(res.pca.w, nb.clust = 3)
 #============================================================================
 #    Partie 4.1: Analyse en Composantes Principales post-crise
 #============================================================================
-required <- c("dplyr","tidyverse","FactoMineR","factoextra","corrplot","strucchange","ggplot2","reshape2")
-for(pkg in required){
-  if(!requireNamespace(pkg, quietly = TRUE)) install.packages(pkg)
-  library(pkg, character.only = TRUE)
-}
 post <- database_w %>% filter(PCRISIS1 == 1)
 pca_post <- PCA(post[, vars], graph = FALSE)
 plot(pca_post, choix = "var")
 pca_post$var$coord
+
+
+pca_post_eig <- pca_post$eig[, "percentage of variance"]
+barplot <- barplot(pca_post_eig,
+                   main = "Pourcentage de Variance expliquée",
+                   names.arg = 1:nrow(pca_post$eig),
+                   col = "lightblue",
+                   border = NA,
+                   xlab = "Composante Principale",
+                   ylab = "% de variance expliquée",
+                   ylim = c(0, max(pca_post_eig) * 1.1))
+lines(barplot, pca_post_eig, type = "o", pch = 19, col = "darkblue", lwd = 2)
+text(x = barplot,
+     y = pca_post_eig+ max(pca_post_eig)*0.05,
+     labels = round(pca_post_eig, 1),
+     cex = 0.9, font = 2)
 
 #============================================================================
 #    Partie 4.2: Analyse en Composantes Principales pre-crise
@@ -139,6 +155,21 @@ pre <- database_w %>% filter(PCRISIS1 == 0)
 pca_pre <- PCA(pre[, vars], graph = FALSE)
 plot(pca_pre, choix = "var")
 pca_pre$var$coord
+
+pca_pre_eig <- pca_pre$eig[, "percentage of variance"]
+barplot <- barplot(pca_pre_eig,
+                   main = "Pourcentage de Variance expliquée",
+                   names.arg = 1:nrow(pca_pre$eig),
+                   col = "lightblue",
+                   border = NA,
+                   xlab = "Composante Principale",
+                   ylab = "% de variance expliquée",
+                   ylim = c(0, max(pca_pre_eig) * 1.1))
+lines(barplot, pca_pre_eig, type = "o", pch = 19, col = "darkblue", lwd = 2)
+text(x = barplot,
+     y = pca_pre_eig+ max(pca_pre_eig)*0.05,
+     labels = round(pca_pre_eig, 1),
+     cex = 0.9, font = 2)
 
 
 #============================================================================
@@ -161,6 +192,7 @@ dev.off()
 png("scree_post.png", width = 800, height = 600)
 fviz_eig(pca_post, addlabels = TRUE, main = "Scree plot - Post-crise")
 dev.off()
+
 scores_pre  <- as.data.frame(res.pca.pre$ind$coord)
 scores_pre$iso3c  <- pre_df$iso3c
 scores_pre$obs_id <- rownames(pre_df)
@@ -183,14 +215,25 @@ write.csv(country_cmp, "country_cp1_pre_post_comparison.csv", row.names = FALSE)
 
 # Top 10 pays les plus durement touchés (plus grande baisse de CP1)
 top10_hurt <- head(country_cmp, 10)
-
-
+#Graphique pour 10 pays les plus durement touchés
+ggplot(top10_hurt, aes(x = delta_CP1, y = reorder(iso3c, delta_CP1))) +
+  geom_col(fill = "grey35", width = 0.8) +
+  geom_vline(xintercept = 0, color = "grey40", linewidth = 0.6) +
+  labs(
+    title = "Top 10 pays : baisse moyenne CP1 (post - pre)",
+    x = "Delta CP1 (post - pre)",
+    y = NULL
+  ) +
+  theme_minimal(base_size = 12) +
+  theme(
+    plot.title = element_text(hjust = 0.5),
+    panel.grid.major.y = element_blank()
+  )
 
 
 #===================================================================================================
 #    Partie 5:	ANALYSE ECONOMETRIQUE – TESTS ET INTERPRETATON ECONOMIQUE :Regression pannel
 #===================================================================================================
-install.packages("plm")
 library(plm)
 pdata <- pdata.frame(database, index = c("iso3c", "date"))
 summary(pdata)
@@ -252,7 +295,6 @@ summary(re)
 print(re)
 
 #robustness check - Résultats du modèle logit à effets aléatoires 
-install.packages("lme4")
 library(lme4)
 logit_re <- glmer(  PCRISIS1 ~ ROAA + CAGDP + INFL + DEPRATE + (1 | iso3c),
                     data = database,
@@ -260,6 +302,7 @@ logit_re <- glmer(  PCRISIS1 ~ ROAA + CAGDP + INFL + DEPRATE + (1 | iso3c),
 print(logit_re)
 
 # Test de robustesse – Modèle à effets aléatoires avec erreurs standards robustes
+library(lmtest)
 coeftest(re, vcov = vcovHC(re, type = "HC1", cluster = "group"))
 
 #Approche de Mundlak
@@ -285,9 +328,6 @@ res_re <- residuals(re)
 shapiro.test(res_re)
 
 #Test de homoscadasticité
-install.packages("lmtest")
-install.packages("car")
-
 library(lmtest)
 library(car)
 
@@ -298,3 +338,93 @@ df <- as.data.frame(pdata)
 lm_for_vif <- lm(formula(re), data = df)
 vif(lm_for_vif)
 
+#========================================================================
+# Partie 6: Les modèles de choix binaire (Logit)
+#========================================================================
+library(dplyr)
+library(lme4)
+
+vars <- c("PCRISIS1","ROAA","CAGDP","INFL","DEPRATE","iso3c")
+db_logit <- database[, vars, drop = FALSE]
+db_logit <- na.omit(db_logit)
+
+# ======================================================================
+# 6.1. Modèle Logit de RE
+#=======================================================================
+logit_re_final <- glmer(
+  PCRISIS1 ~ ROAA + CAGDP + INFL + DEPRATE + (1 | iso3c),
+  data = db_logit,
+  family = binomial(link = "logit")
+)
+summary(logit_re_final)
+
+#Likelihood Ratio Test
+logit_null <- glmer(PCRISIS1 ~ 1 + (1 | iso3c),
+                    data = db_logit,
+                    family = binomial("logit"))
+
+anova(logit_null, logit_re_final, test = "Chisq")
+
+#Psuedo R2
+library(performance) #Psuedo
+r2(logit_re_final)
+
+#===============================================================================
+# 6.2. Qualité de prédiction
+#===============================================================================
+library(pROC)
+
+prob <- predict(logit_re_final, type = "response")
+
+roc_obj <- roc(db_logit$PCRISIS1[!is.na(prob)], prob)
+auc(roc_obj)
+plot(roc_obj, col = "blue")
+
+#=======================================================================
+#6.3. Probabilité de la crise de banque
+#=======================================================================
+database$prob_crisis[as.integer(rownames(db_logit))] <- prob
+
+summary(database$prob_crisis)
+
+#===============================================================================
+#6.4. Effets Marginals
+#===============================================================================
+library(marginaleffects)
+
+dat_used <- model.frame(logit_re_final)
+
+#===============================================================================
+# 6.4. Effets marginaux + Probabilité estimée au point moyen (X̄)
+#===============================================================================
+library(marginaleffects)
+
+#===============================================================================
+# 6.4. Effets marginaux + Probabilité estimée au point moyen (X̄)
+#===============================================================================
+library(marginaleffects)
+
+# (0) échantillon de logit  (N=116)
+dat_used <- model.frame(logit_re_final)
+
+# (1) X moyenne (X̄)
+X_mean <- data.frame(
+  ROAA    = mean(dat_used$ROAA),
+  CAGDP   = mean(dat_used$CAGDP),
+  INFL    = mean(dat_used$INFL),
+  DEPRATE = mean(dat_used$DEPRATE),
+  iso3c   = dat_used$iso3c[1]  # cần cho (1|iso3c), không ảnh hưởng nếu re.form=NA
+)
+X_mean
+
+# (2) Probabilité estimée au point moyen : p(Y=1 | X = X̄)
+P_meanX <- predict(logit_re_final, newdata = X_mean, type = "response", re.form = NA)
+P_meanX
+
+# (3) AME (Average Marginal Effects) = margins, dydx(*) trong Stata
+ame <- avg_slopes(logit_re_final, variables = c("ROAA","CAGDP","INFL","DEPRATE"),
+                  newdata = dat_used, re.form = NA)
+ame
+
+# (4) Descriptives (Moyenne de  X)
+summary(dat_used[, c("ROAA","CAGDP","INFL","DEPRATE")])
