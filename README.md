@@ -88,12 +88,42 @@ Trois profils de pays sont identifiés :
 ### Taux de dépôt
 ✔ hausse → boom du crédit → vulnérabilité financière
 
----
-
-## 7️⃣ Tests diagnostiques
+ ##Tests diagnostiques
 ✔ Normalité — non cruciale ici  
 ✔ Homoscédasticité — validée  
 ✔ Multicolinéarité — faible  
+
+---
+
+## 7️⃣ Estimation (Random Effects Logit)
+
+### 📌 Coefficients
+| Variable | Coef. | Std. Err. | z | p-value | Signe |
+|---|---:|---:|---:|---:|---|
+| Constant | -0.21980 | 0.41670 | -0.527 | 0.59786 | n.s. |
+| **ROAA** | **-0.93608** | 0.30683 | -3.051 | 0.00228 | 🔻 |
+| **CAGDP** | **0.11296** | 0.05255 | 2.149 | 0.03160 | 🔺 |
+| **INFL** | **-0.11757** | 0.04263 | -2.758 | 0.00582 | 🔻 |
+| **DEPRATE** | **0.12848** | 0.04633 | 2.773 | 0.00556 | 🔺 |
+
+**Performance & fit :**
+- **LR Chi²(4) = 36.99 (p < 0.01)**  
+- **AUC = 0.832**  
+- **Pseudo R² marginal = 0.762** ; **Pseudo R² conditionnel = 0.774**  
+- **N = 116 observations (12 pays)** :contentReference[oaicite:3]{index=3
+
+### 📉 Effets marginaux moyens 
+| Variable | Effet marginal | Std. Err. | z | p-value | X̄ |
+|---|---:|---:|---:|---:|---:|
+| **ROAA** | **-0.1581** | 0.04321 | -3.66 | 0.00000 | 0.9150 |
+| **CAGDP** | **0.0191** | 0.00822 | 2.32 | 0.02018 | -1.3877 |
+| **INFL** | **-0.0199** | 0.00616 | -3.23 | 0.00126 | 6.720 |
+| **DEPRATE** | **0.0217** | 0.00672 | 3.23 | 0.00123 | 10.595 |
+
+**Interprétation rapide :**
+- **ROAA** est le facteur le plus puissant : hausse de ROAA → baisse nette du risque de crise.  
+- **DEPRATE** et **CAGDP** augmentent significativement le risque (choc de change + déséquilibres externes).  
+- **INFL** ressort négatif dans ce panel (résultat contextuel/échantillon). :contentReference[oaicite:5]{index=5}
 
 ---
 ## 8️⃣ Enseignements majeurs
@@ -139,5 +169,3 @@ avec les librairies :
 Projet réalisé dans le cadre du :
 🎓 **Master 1 — Ingénierie Économique & Financière**  
 Université de Rennes  
-
-Objectif : **relier recherche académique et analyse empirique quantitative**.
