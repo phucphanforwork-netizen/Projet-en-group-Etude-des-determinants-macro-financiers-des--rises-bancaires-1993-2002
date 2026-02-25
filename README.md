@@ -63,7 +63,7 @@ Trois profils de pays sont identifiés :
 
 ---
 
-## 5️⃣ Régression sur données de panel
+## 5️⃣ Modèle Linéaire en Probabilités
 ### 🧮 Modèle retenu : Effets aléatoires (procédure Baltagi)
 ### ✨ Variables significatives
 | Variable | Effet sur la probabilité de crise |
@@ -76,9 +76,7 @@ Trois profils de pays sont identifiés :
 ➡ Les résultats sont **robustes** (Logit RE, robust SE, Mundlak)
 **R² ≈ 0,19 — cohérent avec phénomènes rares et non-linéaires**
 
----
-
-## 6️⃣ Interprétation économique
+## Interprétation économique
 ### ROAA — Rentabilité des actifs
 ✔ améliore la résilience bancaire
 ### Balance courante / PIB
@@ -95,7 +93,7 @@ Trois profils de pays sont identifiés :
 
 ---
 
-## 7️⃣ Estimation (Random Effects Logit)
+##  6️⃣ Modèle Logit (Random Effects Logit)
 
 ### 📌 Coefficients
 | Variable | Coef. | Std. Err. | z | p-value | Signe |
@@ -110,7 +108,7 @@ Trois profils de pays sont identifiés :
 - **LR Chi²(4) = 36.99 (p < 0.01)**  
 - **AUC = 0.832**  
 - **Pseudo R² marginal = 0.762** ; **Pseudo R² conditionnel = 0.774**  
-- **N = 116 observations (12 pays)** :contentReference[oaicite:3]{index=3
+- **N = 116 observations (12 pays)** 
 
 ### 📉 Effets marginaux moyens 
 | Variable | Effet marginal | Std. Err. | z | p-value | X̄ |
@@ -123,10 +121,10 @@ Trois profils de pays sont identifiés :
 **Interprétation rapide :**
 - **ROAA** est le facteur le plus puissant : hausse de ROAA → baisse nette du risque de crise.  
 - **DEPRATE** et **CAGDP** augmentent significativement le risque (choc de change + déséquilibres externes).  
-- **INFL** ressort négatif dans ce panel (résultat contextuel/échantillon). :contentReference[oaicite:5]{index=5}
+- **INFL** ressort négatif dans ce panel (résultat contextuel/échantillon). 
 
 ---
-## 8️⃣ Enseignements majeurs
+## 7️⃣ Enseignements majeurs
 - Les crises bancaires résultent d’**interactions macro-financières complexes**
 - La **structure de vulnérabilité change après crise**
 - Les **indicateurs bancaires deviennent centraux**
@@ -135,7 +133,7 @@ Trois profils de pays sont identifiés :
 
 ---
 
-## 9️⃣ Conclusion
+## 8️⃣ Conclusion
 L’étude offre une **lecture intégrée** des crises bancaires dans les pays émergents :
 ✔ importance du crédit et de la profondeur financière  
 ✔ rôle déterminant du secteur bancaire  
