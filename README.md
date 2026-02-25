@@ -86,7 +86,8 @@ Trois profils de pays sont identifiés :
 ### Taux de dépôt
 ✔ hausse → boom du crédit → vulnérabilité financière
 
-## Tests diagnostiques
+**Tests diagnostiques**
+
 ✔ Normalité — non cruciale ici  
 ✔ Homoscédasticité — validée  
 ✔ Multicolinéarité — faible  
