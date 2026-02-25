@@ -86,7 +86,7 @@ Trois profils de pays sont identifiés :
 ### Taux de dépôt
 ✔ hausse → boom du crédit → vulnérabilité financière
 
- ##Tests diagnostiques
+## Tests diagnostiques
 ✔ Normalité — non cruciale ici  
 ✔ Homoscédasticité — validée  
 ✔ Multicolinéarité — faible  
@@ -118,7 +118,7 @@ Trois profils de pays sont identifiés :
 | **INFL** | **-0.0199** | 0.00616 | -3.23 | 0.00126 | 6.720 |
 | **DEPRATE** | **0.0217** | 0.00672 | 3.23 | 0.00123 | 10.595 |
 
-**Interprétation rapide :**
+**Interprétation :**
 - **ROAA** est le facteur le plus puissant : hausse de ROAA → baisse nette du risque de crise.  
 - **DEPRATE** et **CAGDP** augmentent significativement le risque (choc de change + déséquilibres externes).  
 - **INFL** ressort négatif dans ce panel (résultat contextuel/échantillon). 
